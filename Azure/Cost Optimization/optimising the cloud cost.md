@@ -2,11 +2,11 @@
   - 
     - [Top 10 Strategies](#Top-10-Strategies)
     - 
-    -[1. Assess and Analyze Current Usage](#1.Assess-and-Analyze-Current-Usage)
+    - [1. Assess and Analyze Current Usage](#1.Assess-and-Analyze-Current-Usage)
     -
-    -
-    -
-    
+    - [2. Rightsize Resources](#2.Rightsize-Resources)
+    - [3. Use Cost-Efficient Pricing Models](#3.Use-Cost-Efficient-Pricing-Models)
+    - [1. Assess and Analyze Current Usage](#1.Assess-and-Analyze-Current-Usage)
     -
     - ## Optimizing cloud costs
 Optimizing cloud costs is essential for businesses to ensure they maximize the value of their cloud investment while minimizing unnecessary expenditures. Here’s  a structured approach with top 10 strategies
@@ -17,12 +17,12 @@ Here walkthrough with Optimising cloud costs with structured approach, which is 
 •	Usage Analysis: Monitor usage patterns using tools like AWS CloudWatch, Azure Monitor, or Google Cloud Operations Suite.
 •	Cost Breakdown: Use cloud provider cost analysis tools (e.g., AWS Cost Explorer) to understand where most spending occurs.
  
-2. Rightsize Resources
+## 2. Rightsize Resources
 •	Evaluate Needs: Match resource types and sizes to actual workload requirements.
 •	Auto-Scaling: Implement auto-scaling to adjust resources dynamically based on demand.
 •	Idle Resources: Identify and terminate underutilized or idle resources.
  
-3. Use Cost-Efficient Pricing Models
+## 3. Use Cost-Efficient Pricing Models
 •	Reserved Instances (RIs): Commit to long-term usage for predictable workloads to get discounts.
 •	Spot Instances: Use spot or preemptible instances for non-critical and flexible workloads.
 •	Savings Plans: Opt for savings plans for compute services if supported by your provider.
