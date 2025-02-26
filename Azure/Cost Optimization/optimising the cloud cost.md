@@ -22,12 +22,18 @@ expenditures. Here’s  a structured approach with top 10 strategies
     Here walkthrough with Optimising cloud costs with structured approach, which is essential for businesses to ensure they maximise the value of
     their cloud investment while minimising unnecessary expenditures.
   
-   - ## 1 Assess and Analyze Current Usage
-      •	Inventory Assessment: Identify all cloud resources in use, including virtual machines (VMs), storage, databases, and networking services.
-  
-      •	Usage Analysis: Monitor usage patterns using tools like AWS CloudWatch, Azure Monitor, or Google Cloud Operations Suite.
-  
-      •	Cost Breakdown: Use cloud provider cost analysis tools (e.g., AWS Cost Explorer) to understand where most spending occurs.
+  - ## 1. Assess and Analyze Current Usage
+      Before cost optimization, it is essential to assess and analyze your Azure resource consumption.
+      ✔ Inventory Assessment
+        •	Identify all Azure services in use, including Virtual Machines (VMs), Storage Accounts, Databases, Networking, and PaaS services.
+        •	Use Azure Resource Graph Explorer to query and list active resources.
+      ✔ Usage Analysis
+        •	Monitor real-time and historical usage patterns using Azure Monitor and Azure Application Insights.
+        •	Enable Azure Advisor Cost Recommendations to analyze cost inefficiencies across workloads.
+      ✔ Cost Breakdown
+        •	Utilize **Azure Cost Management + Billing** to gain visibility **into costs by service**, resource group, subscription, or region.
+        •	Identify top spending areas using Cost Analysis and create custom reports.
+
  
    - ## 2 Rightsize Resources
       •	Evaluate Needs: Match resource types and sizes to actual workload requirements.
