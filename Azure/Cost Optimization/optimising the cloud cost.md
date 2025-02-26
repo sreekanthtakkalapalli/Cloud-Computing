@@ -109,11 +109,11 @@ expenditures. Here’s  a structured approach with top 10 strategies
 
         •	Utilize **Azure Blob Storage tiers:**
 
-            o Hot Tier for frequently accessed data.
+         o  Hot Tier for frequently accessed data.
 
-            o	Cool Tier for infrequently accessed data.
+         o	Cool Tier for infrequently accessed data.
 
-            o	Archive Tier for long-term retention (e.g., backups, compliance data).
+         o	Archive Tier for long-term retention (e.g., backups, compliance data).
 
         ✔ **Automate Data Lifecycle Policies**
 
