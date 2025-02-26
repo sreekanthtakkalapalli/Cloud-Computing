@@ -24,12 +24,17 @@ expenditures. Here’s  a structured approach with top 10 strategies
   
   - ## 1. Assess and Analyze Current Usage
       Before cost optimization, it is essential to assess and analyze your Azure resource consumption.
+    
       ✔ Inventory Assessment
-        •	Identify all Azure services in use, including Virtual Machines (VMs), Storage Accounts, Databases, Networking, and PaaS services.
-        •	Use Azure Resource Graph Explorer to query and list active resources.
+    
+        •	Identify all Azure services in use, including **Virtual Machines (VMs), Storage Accounts, Databases, Networking, and PaaS services**.
+        •	Use **Azure Resource Graph Explorer** to query and list active resources.
+    
       ✔ Usage Analysis
-        •	Monitor real-time and historical usage patterns using Azure Monitor and Azure Application Insights.
-        •	Enable Azure Advisor Cost Recommendations to analyze cost inefficiencies across workloads.
+    
+        •	Monitor real-time and historical usage patterns using **Azure Monitor and Azure Application Insights**.
+        •	Enable **Azure Advisor Cost Recommendations** to analyze cost inefficiencies across workloads.
+    
       ✔ Cost Breakdown
         •	Utilize **Azure Cost Management + Billing** to gain visibility **into costs by service**, resource group, subscription, or region.
         •	Identify top spending areas using Cost Analysis and create custom reports.
