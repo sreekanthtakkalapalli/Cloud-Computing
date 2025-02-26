@@ -2,7 +2,7 @@
   
     - [Top 10 Strategies](#Top-10-Strategies)
       
-    - [1.Assess and Analyze Current Usage](#1.Assess-and-Analyze-Current-Usage)
+      - [1.Assess and Analyze Current Usage](#1.-Assess-and-Analyze-Current-Usage)
       - [2.Rightsize Resources](#2.Rightsize-Resources)
       - [3.Use Cost-Efficient Pricing Models](#3.Use-Cost-Efficient-Pricing-Models)
       - [1. Assess and Analyze Current Usage](#1.Assess-and-Analyze-Current-Usage)
