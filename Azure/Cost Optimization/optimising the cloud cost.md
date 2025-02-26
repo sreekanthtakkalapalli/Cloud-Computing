@@ -18,7 +18,7 @@
 Optimizing cloud costs is essential for businesses to ensure they maximize the value of their cloud investment while minimizing unnecessary
 expenditures. Here’s  a structured approach with top 10 strategies
    
-   - ## Top 10 Strategies
+  - ## Top 10 Strategies
     Here walkthrough with Optimising cloud costs with structured approach, which is essential for businesses to ensure they maximise the value of
     their cloud investment while minimising unnecessary expenditures.
   
