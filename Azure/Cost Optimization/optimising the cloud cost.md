@@ -1,12 +1,15 @@
 - [Optimzing the cloud cost](#Optimising-the-Azure-Cloud-Cost)
-  - [Target candidate description](#target-candidate-description)
+  - 
     - [Top 10 Strategeis](#Top-10-Strategeis)
     - 
+    -[Target candidate description](#target-candidate-description)
     -
-    - Optimizing cloud costs
-    - Top 10 Strategeis
-    - essential for businesses to ensure they maximize the value of their cloud investment while minimizing unnecessary expenditures. Here’s a structured approach:
- 
+    -
+    -
+    -
+    - ## Optimizing cloud costs
+Optimizing cloud costs is essential for businesses to ensure they maximize the value of their cloud investment while minimizing unnecessary expenditures. Here’s  a structured approach:
+ - ## Top 10 Strategeis
 1. Assess and Analyze Current Usage
 •	Inventory Assessment: Identify all cloud resources in use, including virtual machines (VMs), storage, databases, and networking services.
 •	Usage Analysis: Monitor usage patterns using tools like AWS CloudWatch, Azure Monitor, or Google Cloud Operations Suite.
