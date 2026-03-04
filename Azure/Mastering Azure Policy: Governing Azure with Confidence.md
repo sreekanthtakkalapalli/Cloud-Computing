@@ -102,11 +102,11 @@ Tenant Root Group
 Policies assigned at a higher scope automatically apply to all child scopes. This allows enforcing enterprise-wide standards at the top level while allowing more specific rules at lower scopes.
 
 **2.4 Management Groups Best Practices**
-
-•	Create a Platform management group for shared infrastructure.
-•	Create a Landing Zones management group for application workloads.
-•	Create Sandbox management groups for experimental work with relaxed policies.
-•	Use a Decommissioned management group for subscriptions being retired.
+    
+    Create a Platform management group for shared infrastructure.
+    Create a Landing Zones management group for application workloads.
+    Create Sandbox management groups for experimental work with relaxed policies.
+    Use a Decommissioned management group for subscriptions being retired.
 
 **2.5 Policy as a Control Plane Service**
 
@@ -296,7 +296,7 @@ json
       }
     },
     "policyDefinitions": [
-      {
+{
         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/...",
         "policyDefinitionReferenceId": "RequireHttpsOnStorageAccounts",
         "parameters": {}
@@ -317,13 +317,15 @@ Regulatory Compliance Initiative — Maps policies to specific controls in a com
 Regional Restriction Initiative — Restricts resource deployment to approved regions.
  
 - ## 7: Assigning Policies: Scope, Exclusions, and Parameters
-7.1 Choosing the Right Scope
+
+**7.1 Choosing the Right Scope**
 Scope Level	Use Case
 Tenant Root Management Group	Enterprise-wide controls that must apply everywhere
 Management Group	Controls for a specific segment (production, non-prod)
 Subscription	Controls for a specific subscription
 Resource Group	Controls for a specific workload or team
-7.2 Exclusions
+
+**7.2 Exclusions**
 Exclusions carve out specific scopes using the notScopes property:
 json
 {
@@ -335,11 +337,11 @@ json
     ]
   }
 }
-7.3 Exemptions
+**7.3 Exemptions**
 Exemptions are more flexible than exclusions. An exemption has a category (Waiver for business justification or Mitigatedfor alternative controls), an expiration date, and is linked to a specific assignment. They are tracked separately in the compliance view and are ideal for time-limited deviations during migrations or legacy system remediation.
  
 - ##  8: Policy Effects: Controlling Behavior
-8.1 Overview of Policy Effects
+**8.1 Overview of Policy Effects**
 Effect	When Evaluated	What It Does
 Disabled	N/A	Policy is inactive
 Audit	On resource create/update and scan	Creates non-compliant audit event; does not block
@@ -350,7 +352,7 @@ AuditIfNotExists	After resource create/update	Audits if a related resource is mi
 DeployIfNotExists	After resource create/update	Deploys a related resource if missing
 Manual	Compliance scan only	Requires manual confirmation of compliance
 DenyAction	On resource actions	Blocks specific resource actions
-8.2 The Modify Effect
+**8.2 The Modify Effect**
 The Modify effect adds, updates, or removes tags and properties — particularly useful for tag governance where you automatically add missing tags rather than blocking resource creation:
 json
 {
