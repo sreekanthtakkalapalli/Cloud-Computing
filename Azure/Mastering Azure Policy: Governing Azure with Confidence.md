@@ -57,12 +57,19 @@ Azure Policy was introduced in 2017, evolving from an earlier service called Azu
 
 1.5 Core Concepts at a Glance
 Concept	Description
+
 **Policy Definition:**	A rule describing conditions under which resources are compliant or non-compliant
+
 **Initiative (Policy Set):**	A collection of policy definitions grouped for a specific purpose
+
 **Assignment:**	The application of a policy or initiative to a specific scope
+
 **Scope:**	The management group, subscription, or resource group to which a policy applies
+
 **Compliance:** State	Whether a resource or scope is compliant or non-compliant
+
 **Remediation:**  Task	An automated action to bring non-compliant resources into compliance
+
 **Exemption:** A way to exclude specific resources from a policy assignment
  
 Chapter 2: Understanding the Azure Policy Architecture
