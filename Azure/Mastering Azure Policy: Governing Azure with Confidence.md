@@ -41,25 +41,29 @@
     •	Identity Baseline: Managing identities, access, and authentication.
     •	Resource Consistency: Standardizing resource deployment and management.
     •	Deployment Acceleration: Automating and streamlining deployments.
-Azure Policy is a primary technical control across all five disciplines. It is the enforcement engine that turns governance policies from documents into automated reality.
-1.3 Introducing Azure Policy
+
+ Azure Policy is a primary technical control across all five disciplines. It is the enforcement engine that turns governance policies from    documents into automated reality.
+
+ 1.3 Introducing Azure Policy
 Azure Policy is a native Azure service that enables organizations to create, assign, and manage policies that control or audit the properties of Azure resources. Key capabilities include:
 •	Enforcement: Prevent non-compliant resources from being created or updated.
 •	Auditing: Identify resources that don't comply with your standards without blocking them.
 •	Remediation: Automatically fix non-compliant resources.
 •	Compliance Reporting: View the compliance state of your environment in real time.
 •	Integration: Works with Azure Monitor, Microsoft Defender for Cloud, Azure DevOps, GitHub Actions, and more.
+
 1.4 A Brief History of Azure Policy
 Azure Policy was introduced in 2017, evolving from an earlier service called Azure Resource Policy. It has grown from simple allow/deny rules to a comprehensive governance platform supporting complex policy logic, initiative grouping, exemptions, regulatory compliance frameworks, and Kubernetes integration via Open Policy Agent (OPA).
+
 1.5 Core Concepts at a Glance
 Concept	Description
-Policy Definition	A rule describing conditions under which resources are compliant or non-compliant
-Initiative (Policy Set)	A collection of policy definitions grouped for a specific purpose
-Assignment	The application of a policy or initiative to a specific scope
-Scope	The management group, subscription, or resource group to which a policy applies
-Compliance State	Whether a resource or scope is compliant or non-compliant
-Remediation Task	An automated action to bring non-compliant resources into compliance
-Exemption	A way to exclude specific resources from a policy assignment
+**Policy Definition:**	A rule describing conditions under which resources are compliant or non-compliant
+**Initiative (Policy Set):**	A collection of policy definitions grouped for a specific purpose
+**Assignment:**	The application of a policy or initiative to a specific scope
+**Scope:**	The management group, subscription, or resource group to which a policy applies
+**Compliance:** State	Whether a resource or scope is compliant or non-compliant
+**Remediation:**  Task	An automated action to bring non-compliant resources into compliance
+**Exemption:** A way to exclude specific resources from a policy assignment
  
 Chapter 2: Understanding the Azure Policy Architecture
 2.1 The Azure Resource Manager Foundation
