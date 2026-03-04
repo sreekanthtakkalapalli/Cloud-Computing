@@ -72,10 +72,12 @@ This document is designed for cloud architects, DevOps engineers, security engin
  
 - ## 2: Understanding the Azure Policy Architecture
 
-    2.1 The Azure Resource Manager Foundation
+   **2.1 The Azure Resource Manager Foundation**
+  
     Azure Policy is deeply integrated with Azure Resource Manager (ARM), the control plane for all Azure operations. Every time a resource       is created, updated, or deleted, ARM processes the request. Azure Policy hooks into this pipeline, evaluating resource requests before       they are processed (for Deny/Audit effects) and after (for DeployIfNotExists and Modify effects).
 
-    2.2 The Policy Evaluation Pipeline
+   **2.2 The Policy Evaluation Pipeline**
+  
     When a resource request reaches ARM, the following sequence occurs:
     1.	Alias Resolution: ARM resolves resource property aliases used in policy rules.
     2.	Policy Assignment Retrieval: ARM retrieves all applicable policy assignments for the resource's scope.
@@ -85,7 +87,8 @@ This document is designed for cloud architects, DevOps engineers, security engin
 
    For existing resources, Azure Policy runs periodic compliance scans approximately every 24 hours.
 
-   2.3 Scope Hierarchy
+   **2.3 Scope Hierarchy**
+
 Tenant Root Group
 └── Management Group (e.g., "Enterprise")
     ├── Management Group (e.g., "Production")
@@ -95,21 +98,24 @@ Tenant Root Group
     │   └── Subscription B
     └── Management Group (e.g., "Non-Production")
         └── Subscription C
+
 Policies assigned at a higher scope automatically apply to all child scopes. This allows enforcing enterprise-wide standards at the top level while allowing more specific rules at lower scopes.
 
-2.4 Management Groups Best Practices
+**2.4 Management Groups Best Practices**
+
 •	Create a Platform management group for shared infrastructure.
 •	Create a Landing Zones management group for application workloads.
 •	Create Sandbox management groups for experimental work with relaxed policies.
 •	Use a Decommissioned management group for subscriptions being retired.
 
-2.5 Policy as a Control Plane Service
+**2.5 Policy as a Control Plane Service**
+
 Unlike most Azure services, Azure Policy does not require any agents or extensions to govern most Azure resources. It operates at the control plane level, making it inherently scalable — a single policy definition can govern thousands of resources across hundreds of subscriptions without any additional infrastructure.
- 
 
 - ## 3: Policy Definitions: Structure and Syntax
 
-3.1 Anatomy of a Policy Definition
+**3.1 Anatomy of a Policy Definition**
+
 A policy definition is a JSON document with a well-defined structure:
 json
 {
