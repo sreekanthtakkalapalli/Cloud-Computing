@@ -101,16 +101,23 @@ Tenant Root Group
 
 Policies assigned at a higher scope automatically apply to all child scopes. This allows enforcing enterprise-wide standards at the top level while allowing more specific rules at lower scopes.
 
-**2.4 Management Groups Best Practices**
-    
-    Create a Platform management group for shared infrastructure.
-    Create a Landing Zones management group for application workloads.
-    Create Sandbox management groups for experimental work with relaxed policies.
-    Use a Decommissioned management group for subscriptions being retired.
+ **2.4 Management Groups Best Practices**
+ 
+  Create a Platform management group for shared infrastructure.
+ 
+  Create a Landing Zones management group for application workloads.
+ 
+  Create Sandbox management groups for experimental work with relaxed policies.
+ 
+  Use a Decommissioned management group for subscriptions being retired.
+ 
+  Azure Landing Zone and management group best practices ref: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/
+ 
+ **2.5 Policy as a Control Plane Service**
 
-**2.5 Policy as a Control Plane Service**
-
-Unlike most Azure services, Azure Policy does not require any agents or extensions to govern most Azure resources. It operates at the control plane level, making it inherently scalable — a single policy definition can govern thousands of resources across hundreds of subscriptions without any additional infrastructure.
+  Unlike most Azure services, Azure Policy does not require any agents or extensions to govern most Azure resources. 
+  
+  It operates at the control plane level, making it inherently scalable — a single policy definition can govern thousands of resources         across hundreds of subscriptions without any additional infrastructure.
 
 - ## 3: Policy Definitions: Structure and Syntax
 
@@ -148,17 +155,24 @@ json
   }
 }
 
-3.2 The mode Property
-•	Indexed: Only evaluates resource types that support tags and location.
-•	All: Evaluates all resource types, including resource groups and subscriptions.
-•	Microsoft.Kubernetes.Data: Used for Kubernetes-specific policies.
-•	Microsoft.KeyVault.Data: Used for Key Vault data plane policies.
-•	Microsoft.Network.Data: Used for network-level policies.
+**3.2 The mode Property**
 
-3.3 Parameters
-Parameters make policy definitions reusable by allowing values to be specified at assignment time. Properties include type(String, Array, Object, Boolean, Integer, Float, DateTime), defaultValue, allowedValues, and metadata.
+   Indexed: Only evaluates resource types that support tags and location.
+   
+   All: Evaluates all resource types, including resource groups and subscriptions.
+   
+   Microsoft.Kubernetes.Data: Used for Kubernetes-specific policies.
+   
+   Microsoft.KeyVault.Data: Used for Key Vault data plane policies.
+   
+   Microsoft.Network.Data: Used for network-level policies.
 
-3.4 Policy Rule: The if Condition
+**3.3 Parameters**
+
+ Parameters make policy definitions reusable by allowing values to be specified at assignment time. Properties include type(String,           Array, Object, Boolean, Integer, Float, DateTime), defaultValue, allowedValues, and metadata.
+
+**3.4 Policy Rule: The if Condition**
+
 The if block uses field values, resource aliases, and logical operators (allOf, anyOf, not):
 json
 {
@@ -168,8 +182,11 @@ json
   ]
 }
 
-3.5 Resource Property Aliases
-Aliases map friendly names to actual resource property paths in the ARM schema. To discover available aliases:
+**3.5 Resource Property Aliases**
+
+Aliases map friendly names to actual resource property paths in the ARM schema. 
+
+To discover available aliases:
 powershell
 # Azure PowerShell
 (Get-AzPolicyAlias -NamespaceMatch "Microsoft.Storage").Aliases | Select-Object Name
@@ -178,7 +195,8 @@ bash
 az provider show --namespace Microsoft.Storage --expand resourceTypes \
   --query "resourceTypes[?resourceType=='storageAccounts'].aliases[].name"
 
-3.6 Count Expressions
+**3.6 Count Expressions**
+
 Count expressions evaluate collections of values within a resource:
 json
 {
@@ -194,32 +212,46 @@ json
  
 - ## 4: Built-in Policies and the Policy Library
 
-4.1 The Azure Built-in Policy Library
+**4.1 The Azure Built-in Policy Library**
+
 Microsoft provides thousands of built-in policy definitions organized into categories: Security Center, Storage, Compute, Network, SQL, Key Vault, Kubernetes, Tags, and Regulatory Compliance.
 
-4.2 Regulatory Compliance Initiatives
-Standard	Description
+**4.2 Regulatory Compliance Initiatives**
+
+Below are the Compliance frameworks which will available in Azure currently 
+
 CIS Microsoft Azure Foundations Benchmark	Center for Internet Security hardening guide
+
 NIST SP 800-53 Rev. 5	US federal security and privacy controls
+
 ISO 27001:2013	International information security management
+
 PCI DSS v4	Payment card industry data security standard
+
 HIPAA/HITRUST	Healthcare data protection
+
 SOC 2 Type II	Service organization controls
+
 FedRAMP High	US federal authorization framework
+
 Azure Security Benchmark	Microsoft's Azure-specific security guidance
 
-4.3 Evaluating Built-in Policies Before Assignment
+**4.3 Evaluating Built-in Policies Before Assignment**
+
 Before assigning any built-in policy, review the effect (start with Audit before Deny), the aliases used, available parameters, and the resource types evaluated. This prevents unexpected disruption when switching to enforcing effects.
  
 - ## 5: Writing Custom Policy Definitions
 
-5.1 When to Write Custom Policies
+**5.1 When to Write Custom Policies**
+
 Custom policies are necessary when built-in policies don't address your specific requirement, when enforcing organization-specific naming conventions or tagging schemas, when you have unique security requirements, or when governing third-party or custom resource types.
 
-5.2 Planning Your Custom Policy
+**5.2 Planning Your Custom Policy**
+
 Before writing any JSON, answer these questions: What resource type(s) am I targeting? What property am I evaluating? What condition defines non-compliance? What effect should apply? Should the policy be parameterized?
 
-5.3 Example: Enforcing Minimum TLS Version
+**5.3 Example: Enforcing Minimum TLS Version**
+
 json
 {
   "properties": {
@@ -247,7 +279,8 @@ json
   }
 }
 
-5.4 Example: Enforcing Naming Conventions
+**5.4 Example: Enforcing Naming Conventions**
+
 Using the match operator (where ? matches any character and # matches any digit):
 json
 {
@@ -260,7 +293,8 @@ json
   "then": { "effect": "deny" }
 }
 
-5.5 Example: Restricting Allowed SKUs
+**5.5 Example: Restricting Allowed SKUs**
+
 json
 {
   "if": {
@@ -281,9 +315,13 @@ json
 Always deploy in Audit mode first, use the Policy compliance view to review non-compliant resources, test with ARM What-If to validate new deployments, and use the Policy Evaluator tool in the portal for unit-testing.
 
 - ## 6: Policy Initiatives (Policy Sets)
-6.1 What Are Initiatives?
+  
+**6.1 What Are Initiatives?**
+
 An initiative (also called a policy set) is a collection of policy definitions grouped together to achieve a broader governance goal. One assignment applies all included policies at once, with unified compliance reporting and centralized parameterization.
-6.2 Structure of an Initiative Definition
+
+**6.2 Structure of an Initiative Definition**
+
 json
 {
   "properties": {
@@ -310,15 +348,20 @@ json
     ]
   }
 }
-6.3 Common Initiative Patterns
-Security Baseline Initiative — All security configuration policies for a resource type or workload.
-Tagging Initiative — All tag enforcement policies for environment, costcenter, owner, and project.
-Regulatory Compliance Initiative — Maps policies to specific controls in a compliance framework.
-Regional Restriction Initiative — Restricts resource deployment to approved regions.
+**6.3 Common Initiative Patterns**
+
+   Security Baseline Initiative — All security configuration policies for a resource type or workload.
+   
+   Tagging Initiative — All tag enforcement policies for environment, costcenter, owner, and project.
+   
+   Regulatory Compliance Initiative — Maps policies to specific controls in a compliance framework.
+   
+   Regional Restriction Initiative — Restricts resource deployment to approved regions.
  
 - ## 7: Assigning Policies: Scope, Exclusions, and Parameters
 
 **7.1 Choosing the Right Scope**
+
 Scope Level	Use Case
 Tenant Root Management Group	Enterprise-wide controls that must apply everywhere
 Management Group	Controls for a specific segment (production, non-prod)
@@ -326,6 +369,7 @@ Subscription	Controls for a specific subscription
 Resource Group	Controls for a specific workload or team
 
 **7.2 Exclusions**
+
 Exclusions carve out specific scopes using the notScopes property:
 json
 {
@@ -338,7 +382,10 @@ json
   }
 }
 **7.3 Exemptions**
-Exemptions are more flexible than exclusions. An exemption has a category (Waiver for business justification or Mitigatedfor alternative controls), an expiration date, and is linked to a specific assignment. They are tracked separately in the compliance view and are ideal for time-limited deviations during migrations or legacy system remediation.
+
+Exemptions are more flexible than exclusions. 
+An exemption has a category (Waiver for business justification or Mitigatedfor alternative controls), an expiration date, and is linked to a specific assignment. 
+They are tracked separately in the compliance view and are ideal for time-limited deviations during migrations or legacy system remediation.
  
 - ##  8: Policy Effects: Controlling Behavior
 **8.1 Overview of Policy Effects**
@@ -372,9 +419,9 @@ json
     }
   }
 }
-8.3 DeployIfNotExists Effect
+**8.3 DeployIfNotExists Effect**
 DeployIfNotExists (DINE) deploys an ARM template when a specific related resource doesn't exist. Common uses: deploying diagnostic settings automatically, enabling Defender for Cloud on new subscriptions, deploying monitoring agents to VMs. DINE policies require a managed identity with sufficient permissions.
-8.4 The Effect Deployment Ladder
+**8.4 The Effect Deployment Ladder**
 A practical approach to safely deploying policies:
 1.	Disabled — Deploy the assignment to verify scope and parameters look correct.
 2.	Audit — Enable in audit-only mode to see compliance impact without blocking.
@@ -382,9 +429,9 @@ A practical approach to safely deploying policies:
 4.	Deny — Enable enforcement only once the environment is clean.
  
 - ## 9: Remediation Tasks and DeployIfNotExists
-9.1 How Remediation Tasks Work
+**9.1 How Remediation Tasks Work**
 A remediation task queries the policy compliance store for all non-compliant resources, iterates through them in batches, deploys the ARM template specified in the DINE policy or applies modify operations, and updates the compliance state for each remediated resource.
-9.2 Managed Identity Requirements
+**9.2 Managed Identity Requirements**
 DINE and Modify policies require a managed identity to execute ARM deployments. This identity must have appropriate RBAC permissions at the remediation scope:
 powershell
 $assignment = New-AzPolicyAssignment `
@@ -393,13 +440,13 @@ $assignment = New-AzPolicyAssignment `
   -Scope $scope `
   -Location "eastus" `
   -AssignIdentity
-9.3 Creating and Monitoring Remediation Tasks
+**9.3 Creating and Monitoring Remediation Tasks**
 powershell
 Start-AzPolicyRemediation `
   -Name "remediation-diag-settings" `
   -PolicyAssignmentId $assignmentId `
   -ResourceDiscoveryMode ReEvaluateCompliance
-9.4 Common DINE Use Cases
+**9.4 Common DINE Use Cases**
 •	Diagnostic Settings: Route logs from resources to a Log Analytics workspace.
 •	Defender for Cloud: Enable Defender plans on all subscriptions.
 •	VM Monitoring: Deploy the Azure Monitor Agent to all virtual machines.
@@ -407,7 +454,7 @@ Start-AzPolicyRemediation `
 •	Private Endpoints: Deploy private endpoints for PaaS services.
  
 - ## 10: Compliance Evaluation and Reporting
-10.1 Compliance States
+**10.1 Compliance States**
 State	Meaning
 Compliant	Resource meets all applicable policy conditions
 Non-compliant	Resource violates one or more applicable policies
@@ -415,7 +462,7 @@ Exempt	Resource is excluded via an exemption
 Conflict	Conflicting policies produce an ambiguous result
 Not started	Evaluation has not yet run
 Unknown	Compliance state cannot be determined
-10.2 Triggering On-Demand Evaluation
+**10.2 Triggering On-Demand Evaluation**
 bash
 # Azure CLI
 az policy state trigger-scan --resource-group myResourceGroup
