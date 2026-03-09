@@ -5,6 +5,7 @@ As organizations accelerate their cloud adoption journeys, the need for robust g
 This document is designed for cloud architects, DevOps engineers, security engineers, and IT governance teams who want to move beyond the basics and truly master Azure Policy. Whether you're building a new governance framework from scratch or trying to tame a sprawling Azure environment that has grown organically, this provides the depth, breadth, and practical guidance you need.
  
 - ## Table of Contents
+  
       1.	Introduction to Cloud Governance and Azure Policy
       2.	Understanding the Azure Policy Architecture
       3.	Policy Definitions: Structure and Syntax
@@ -698,14 +699,17 @@ resource "azurerm_management_group_policy_assignment" "https_storage" {
 }
  
 - ## 15: Azure Policy for Kubernetes (AKS and Arc)
-15.1 How Azure Policy for Kubernetes Works
+
+**15.1 How Azure Policy for Kubernetes Works**
 1.	The Azure Policy Add-on is installed on the Kubernetes cluster.
 2.	The add-on fetches applicable policy assignments from Azure Policy.
 3.	It installs corresponding OPA Gatekeeper constraints on the cluster.
 4.	When a Kubernetes resource is submitted, Gatekeeper evaluates it against all active constraints.
 5.	Non-compliant resources are rejected with a descriptive error message.
 6.	Compliance state is reported back to Azure Policy.
-15.2 Common Kubernetes Policy Scenarios
+
+**15.2 Common Kubernetes Policy Scenarios**
+
 •	Restrict container images to approved registries.
 •	Require resource limits and requests on all containers.
 •	Disallow privileged containers.
@@ -714,7 +718,9 @@ resource "azurerm_management_group_policy_assignment" "https_storage" {
 •	Disallow hostPath volumes.
 •	Require read-only root filesystem.
 •	Restrict Linux capabilities in containers.
-15.3 Enabling the Azure Policy Add-on
+
+**15.3 Enabling the Azure Policy Add-on**
+
 bash
 # Enable on an existing AKS cluster
 az aks enable-addons \
@@ -723,16 +729,24 @@ az aks enable-addons \
   --resource-group myRG
  
 - ## 16: Azure Policy with Azure Arc: Governing Hybrid and Multi-Cloud
-16.1 Azure Arc Overview
+- 
+**16.1 Azure Arc Overview**
+
 Azure Arc extends Azure management capabilities to resources running outside of Azure — on-premises servers, VMs on other cloud providers (AWS, GCP), and Kubernetes clusters anywhere. With Azure Arc, non-Azure resources become first-class citizens in the Azure management plane, including Azure Policy.
-16.2 Guest Configuration
+
+**16.2 Guest Configuration**
+
 Azure Policy Guest Configuration audits and enforces settings inside virtual machines — not just Azure properties, but actual OS configuration including file content and permissions, registry settings (Windows), installed software, service states, and security configurations (password policies, audit policies).
 Guest Configuration uses DSC (PowerShell Desired State Configuration) for Windows and Chef InSpec for Linux.
-16.3 Arc-Enabled Kubernetes
+
+**16.3 Arc-Enabled Kubernetes**
+
 Azure Arc-enabled Kubernetes extends Kubernetes policy support to clusters running anywhere — on-premises, AWS EKS, GCP GKE, or elsewhere. This makes Azure Policy a true multi-cloud governance solution for Kubernetes workloads.
  
 - ## 17: Advanced Scenarios and Best Practices
-17.1 Policy Versioning
+  
+**17.1 Policy Versioning**
+
 Maintain versioning in policy metadata using semantic versioning:
 json
 {
@@ -744,7 +758,9 @@ json
   }
 }
 Use major versions for breaking changes, minor for new functionality, and patch for bug fixes.
-17.2 Policy Testing
+
+**17.2 Policy Testing**
+
 Write automated tests for policies using Pester (PowerShell):
 powershell
 Describe "Storage TLS Policy" {
@@ -757,20 +773,28 @@ Describe "Storage TLS Policy" {
     $result.Effect | Should -Be "Deny"
   }
 }
-17.3 Handling Policy Conflicts
+
+**17.3 Handling Policy Conflicts**
+
 Policy conflicts occur when multiple policies target the same resource with contradictory effects. Azure Policy resolves conflicts with this precedence:
 Deny > Audit > Append > AuditIfNotExists / DeployIfNotExists / Modify > Disabled
 To avoid conflicts: maintain a central policy registry, use management groups to organize policies by scope, and regularly review the full assignment inventory.
-17.4 Performance at Scale
+
+**17.4 Performance at Scale**
+
 At large scale (thousands of subscriptions, millions of resources):
 •	Use type as the first condition to filter early and minimize resources evaluated by expensive conditions.
 •	Avoid overly complex nested conditions — each allOf/anyOf layer adds evaluation time.
 •	Prefer a single in condition over multiple equals conditions combined with anyOf.
-17.5 Policy Documentation and Change Communication
+
+**17.5 Policy Documentation and Change Communication**
+
 For every policy assignment: document the business justification, communicate to affected teams before deploying in Deny mode, provide remediation guidance, and establish an exception/exemption process for legitimate deviations.
  
 - ## 18: Troubleshooting Azure Policy
-18.1 Common Issues and Solutions
+
+**18.1 Common Issues and Solutions**
+
 Policy assigned but resources not being evaluated:
 •	Verify the assignment scope includes the resource.
 •	Check that the policy mode matches the resource type.
@@ -789,17 +813,23 @@ Deny policy is blocking expected deployments:
 •	Use the Azure Policy Evaluator in the portal to test a resource against the policy.
 •	Verify the resource aliases used are correct.
 •	Review the if condition carefully for logic errors.
-18.2 Policy Diagnostic Queries
+
+**18.2 Policy Diagnostic Queries**
+
 kql
 AzureActivity
 | where OperationNameValue contains "MICROSOFT.AUTHORIZATION/POLICYASSIGNMENTS"
 | project TimeGenerated, Caller, OperationNameValue, ResultDescription
 | order by TimeGenerated desc
-18.3 The Policy Evaluator Tool
+
+**18.3 The Policy Evaluator Tool**
+
 The Policy Evaluator in the Azure Portal lets you test a policy against a sample resource definition without deploying anything: navigate to Azure Policy → Definitions, select a policy, click Evaluate, provide a sample resource JSON, and view the evaluation result.
  
 - ## 19: Building a Cloud Governance Center of Excellence
-19.1 The Governance CoE Model
+- 
+**19.1 The Governance CoE Model**
+  
 A Cloud Governance Center of Excellence (CoE) is a cross-functional team typically comprising:
 •	Cloud Architects — Design governance structures and policy logic.
 •	Security Engineers — Define security control requirements.
@@ -807,14 +837,18 @@ A Cloud Governance Center of Excellence (CoE) is a cross-functional team typical
 •	DevOps Engineers — Implement policy-as-code pipelines.
 •	FinOps Team — Define cost governance policies.
 •	Application Teams — Provide feedback on policy impact to workloads.
-19.2 Governance Maturity Model
-Level	Description
+
+**19.2 Governance Maturity Model**
+
+Below levels can help out 
 Level 1 - Ad Hoc	No formal policies. Resources deployed inconsistently.
 Level 2 - Reactive	Policies created in response to incidents. Mostly audit-mode.
 Level 3 - Proactive	Policies planned ahead of deployment. Mix of audit and deny.
 Level 4 - Managed	Policy-as-code. CI/CD pipelines. Regular compliance reviews.
 Level 5 - Optimizing	Continuous improvement. Policy KPIs tracked. Automated remediation at scale.
-19.3 Governance KPIs and Metrics
+
+**19.3 Governance KPIs and Metrics**
+
 Track these metrics to measure governance effectiveness:
 •	Overall compliance percentage — Across all assignments and subscriptions.
 •	Time to compliance — How quickly non-compliant resources are remediated.
@@ -822,12 +856,20 @@ Track these metrics to measure governance effectiveness:
 •	Exemption count — Number of active exemptions (high count signals governance gaps).
 •	Mean time to remediate — Average time from non-compliance detection to resolution.
 •	Policy coverage — Percentage of resource types covered by at least one policy.
-19.4 Azure Landing Zones Integration
-Azure Landing Zones (ALZ) provide a prescriptive framework for well-governed Azure environments with an extensive policy library covering connectivity, identity, management, and security. Using the ALZ policy library as your starting point significantly accelerates governance maturity.
-19.5 Continuous Compliance Review Cadence
+
+**19.4 Azure Landing Zones Integration**
+
+Azure Landing Zones (ALZ) provide a prescriptive framework for well-governed Azure environments with an extensive policy library covering connectivity, identity, management, and security. 
+Using the ALZ policy library as your starting point significantly accelerates governance maturity.
+
+**19.5 Continuous Compliance Review Cadence**
+
 Weekly: Review the compliance dashboard for sudden drops; resolve critical Defender for Cloud alerts.
+
 Monthly: Review all active exemptions and remove expired ones; review remediation task completion rates; analyze policy violation trends.
-Quarterly: Review policy inventory for obsolete or overlapping definitions; assess new Azure services for policy gaps; update regulatory compliance initiatives for standard updates; run a governance maturity assessment.
+
+Quarterly: Review policy inventory for obsolete or overlapping definitions; assess new Azure services for policy gaps; update regulatory 
+compliance initiatives for standard updates; run a governance maturity assessment.
  
 - ## 20: Appendix
 
