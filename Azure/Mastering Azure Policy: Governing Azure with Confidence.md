@@ -389,7 +389,9 @@ An exemption has a category (Waiver for business justification or Mitigatedfor a
 They are tracked separately in the compliance view and are ideal for time-limited deviations during migrations or legacy system remediation.
  
 - ##  8: Policy Effects: Controlling Behavior
+  
 **8.1 Overview of Policy Effects**
+
 Effect	When Evaluated	What It Does
 Disabled	N/A	Policy is inactive
 Audit	On resource create/update and scan	Creates non-compliant audit event; does not block
@@ -400,7 +402,9 @@ AuditIfNotExists	After resource create/update	Audits if a related resource is mi
 DeployIfNotExists	After resource create/update	Deploys a related resource if missing
 Manual	Compliance scan only	Requires manual confirmation of compliance
 DenyAction	On resource actions	Blocks specific resource actions
+
 **8.2 The Modify Effect**
+
 The Modify effect adds, updates, or removes tags and properties — particularly useful for tag governance where you automatically add missing tags rather than blocking resource creation:
 json
 {
@@ -420,9 +424,13 @@ json
     }
   }
 }
+
 **8.3 DeployIfNotExists Effect**
+
 DeployIfNotExists (DINE) deploys an ARM template when a specific related resource doesn't exist. Common uses: deploying diagnostic settings automatically, enabling Defender for Cloud on new subscriptions, deploying monitoring agents to VMs. DINE policies require a managed identity with sufficient permissions.
+
 **8.4 The Effect Deployment Ladder**
+
 A practical approach to safely deploying policies:
 1.	Disabled — Deploy the assignment to verify scope and parameters look correct.
 2.	Audit — Enable in audit-only mode to see compliance impact without blocking.
@@ -430,9 +438,13 @@ A practical approach to safely deploying policies:
 4.	Deny — Enable enforcement only once the environment is clean.
  
 - ## 9: Remediation Tasks and DeployIfNotExists
+  
 **9.1 How Remediation Tasks Work**
+
 A remediation task queries the policy compliance store for all non-compliant resources, iterates through them in batches, deploys the ARM template specified in the DINE policy or applies modify operations, and updates the compliance state for each remediated resource.
+
 **9.2 Managed Identity Requirements**
+
 DINE and Modify policies require a managed identity to execute ARM deployments. This identity must have appropriate RBAC permissions at the remediation scope:
 powershell
 $assignment = New-AzPolicyAssignment `
@@ -441,13 +453,17 @@ $assignment = New-AzPolicyAssignment `
   -Scope $scope `
   -Location "eastus" `
   -AssignIdentity
+  
 **9.3 Creating and Monitoring Remediation Tasks**
+
 powershell
 Start-AzPolicyRemediation `
   -Name "remediation-diag-settings" `
   -PolicyAssignmentId $assignmentId `
   -ResourceDiscoveryMode ReEvaluateCompliance
+  
 **9.4 Common DINE Use Cases**
+
 •	Diagnostic Settings: Route logs from resources to a Log Analytics workspace.
 •	Defender for Cloud: Enable Defender plans on all subscriptions.
 •	VM Monitoring: Deploy the Azure Monitor Agent to all virtual machines.
@@ -455,7 +471,9 @@ Start-AzPolicyRemediation `
 •	Private Endpoints: Deploy private endpoints for PaaS services.
  
 - ## 10: Compliance Evaluation and Reporting
+  
 **10.1 Compliance States**
+
 State	Meaning
 Compliant	Resource meets all applicable policy conditions
 Non-compliant	Resource violates one or more applicable policies
@@ -463,16 +481,22 @@ Exempt	Resource is excluded via an exemption
 Conflict	Conflicting policies produce an ambiguous result
 Not started	Evaluation has not yet run
 Unknown	Compliance state cannot be determined
+
 **10.2 Triggering On-Demand Evaluation**
+
 bash
 # Azure CLI
 az policy state trigger-scan --resource-group myResourceGroup
 
 # PowerShell
 Start-AzPolicyComplianceScan -ResourceGroupName myResourceGroup
-10.3 Exporting Compliance Data
+
+**10.3 Exporting Compliance Data**
+
 Compliance data can be exported to Log Analytics Workspace (for KQL analysis and alerting), Event Hub (for SIEM integration), Storage Account (for archival and reporting), and Azure Monitor Workbooks (for custom dashboards).
-10.4 Policy Insights with Azure Resource Graph
+
+**10.4 Policy Insights with Azure Resource Graph**
+
 kql
 PolicyResources
 | where type == "microsoft.policyinsights/policystates"
@@ -481,13 +505,17 @@ PolicyResources
 | order by count_ desc
  
 - ## 11: Azure Policy and Azure RBAC
-11.1 Policy vs. RBAC — Complementary Controls
+  
+**11.1 Policy vs. RBAC — Complementary Controls**
+
 Aspect	Azure Policy	Azure RBAC
 Purpose	Resource configuration compliance	Access control
 Focus	What resources look like	What users can do
 Default	All resources are evaluated	No access by default
 RBAC controls who can create and manage resources; Policy controls how those resources must be configured. Together they form a complete governance layer.
-11.2 Built-in RBAC Roles for Policy
+
+**11.2 Built-in RBAC Roles for Policy**
+
 Role	Key Permissions
 Resource Policy Contributor	Create/manage policies and assignments
 Owner	Full permissions including policy assignments
@@ -495,7 +523,9 @@ Contributor	No policy assignment permissions
 For least-privilege governance management, use Resource Policy Contributor rather than Owner.
  
 - ## 12: Governing Cost with Azure Policy
-12.1 Restricting Allowed SKUs
+  
+**12.1 Restricting Allowed SKUs**
+
 json
 {
   "if": {
@@ -511,7 +541,9 @@ json
   },
   "then": { "effect": "Deny" }
 }
-12.2 Enforcing Resource Location
+
+**12.2 Enforcing Resource Location**
+
 Restrict resource deployment to specific Azure regions to control data residency and leverage reserved capacity:
 json
 {
@@ -523,14 +555,21 @@ json
   },
   "then": { "effect": "Deny" }
 }
-12.3 Tag Enforcement for Cost Allocation
+
+**12.3 Tag Enforcement for Cost Allocation**
+
 Tags like costcenter, project, and owner are essential for cost allocation and chargeback. Use Policy to enforce these tags, and consider using the modify effect to automatically add missing tags rather than blocking resource creation.
-12.4 Auto-Shutdown for Dev Environments
+
+**12.4 Auto-Shutdown for Dev Environments**
+
 Use the deployIfNotExists effect to automatically configure auto-shutdown schedules on VMs in development resource groups, preventing overnight resource waste and reducing unnecessary spend.
-12.5 Integration with Azure Cost Management
+
+**12.5 Integration with Azure Cost Management**
+
 Azure Cost Management provides budget alerts. Combined with Policy: Policy prevents expensive resources from being created, while Cost Management alerts notify stakeholders when budgets are approached — creating a layered cost governance control.
  
 - ## 13: Security and Regulatory Compliance with Azure Policy
+  
 13.1 Microsoft Defender for Cloud Integration
 Microsoft Defender for Cloud uses Azure Policy as its underlying enforcement engine. Every recommendation corresponds to a policy definition or initiative. The Azure Security Benchmark initiative covers hundreds of security policies across encryption, network access controls, identity, logging, vulnerability management, and endpoint protection.
 Defender for Cloud's Secure Score is calculated based on policy compliance — remediating non-compliant policies directly improves your Secure Score.
@@ -551,16 +590,21 @@ Logging and Monitoring:
 •	Require diagnostic settings on all resources
 •	Require Activity Log retention of at least 1 year
 •	Audit VMs without Log Analytics agent
-13.3 Assigning Regulatory Compliance Initiatives
-powershell
-New-AzPolicyAssignment `
-  -Name "pci-dss-compliance" `
-  -DisplayName "PCI DSS v4.0 Compliance" `
-  -PolicySetDefinitionId "/providers/Microsoft.Authorization/policySetDefinitions/c676748e-3af9-4e22-bc28-50feed564afb" `
+
+**13.3 Assigning Regulatory Compliance Initiatives**
+
+# powershell
+
+New-AzPolicyAssignment 
+  -Name "pci-dss-compliance" 
+  -DisplayName "PCI DSS v4.0 Compliance" 
+  -PolicySetDefinitionId "/providers/Microsoft.Authorization/policySetDefinitions/c676748e-3af9-4e22-bc28-50feed564afb" 
   -Scope "/subscriptions/{subscriptionId}"
-```
-13.4 Customizing Compliance Initiatives
+
+**13.4 Customizing Compliance Initiatives**
+
 Built-in compliance initiatives often contain policies irrelevant to your environment. When this happens: clone the initiative definition, remove inapplicable policies, add organization-specific custom policies, and deploy the customized version as a custom initiative.
+
 
 - ## 14: Policy as Code: Integrating into DevOps Pipelines
 14.1 Why Policy as Code?
